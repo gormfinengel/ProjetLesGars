@@ -7,19 +7,12 @@ from matplotlib.widgets import Slider, Button, RadioButtons
 from scipy.stats import norm
 from scipy.stats import rv_histogram
 
+
+all_data = [np.random.normal(0, std, size=100) for std in range(1, 4)]
+
 filename = "MC_matrix"
 
-loaded_matrix = np.loadtxt(filename)
-
-M = 100
-T = 100
-N = 100
-
-original_matrix = np.zeros((M,T,N))
-
-mc_values = loaded_matrix
-
-#mc_values = loaded_matrix.reshape(loaded_matrix.shape[0], loaded_matrix.shape[1] // original_matrix.shape[2], original_matrix.shape[2])
+mc_values = np.loadtxt(filename)
 
 fl_fix = 800
 init_t = 10
@@ -36,29 +29,43 @@ def distribution():
     for i in range(len(mc_values[:][0])):
         m[i] = np.mean(mc_values[:][i])
         v[i] = np.var(mc_values[:][i])
-    
     return m, v
 
 def histogram(mc_v):
     
-    counts = np.zeros(np.shape(mc_v))
-    
-    bins = np.zeros((np.shape(mc_v)[0] + 1, np.shape(mc_v)[0] + 1))
-    print(np.shape(bins))
+    M, N = np.shape(mc_v)
+    count = np.zeros((N,N))
+    bin = np.zeros((N+1,N+1))
     for i in range(len(mc_v[0])):
         c, b = np.histogram(mc_v[:][i], bins=100)
-        counts[i] = c
-        bins[i] = b
+        count[i] = c
+        bin[i] = b
         
-    return counts, bins
+    return count, bin
+
+
+def boxplot(mc_v):
+    M, N = np.shape(mc_v)
+    plt.figure()
+    lab = np.linspace(0,N,100)
+    plt.boxplot(mc_v, labels = lab)
+    #for i in range(N):
+       # plt.boxplot(mc_v[:][i])
         
+    plt.show()
+        
+boxplot(mc_values)
+
+
+
 counts, bins = histogram(mc_values)
 
-x_init = 50
-
-plt.figure()
-plt.hist(bins[50][:-1], bins[50], weights=counts[50])
-plt.show()
+# x_init = 50
+# for i in range(0,150,30):
+#     plt.figure()
+#     print("Bins:" + str(np.shape(bins[i])))
+#     plt.hist(bins[i][:-1], bins[i], weights=counts[i])
+#     plt.show()
 
 fig = plt.figure()
 ax = fig.add_subplot(111)

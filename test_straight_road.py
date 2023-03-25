@@ -4,8 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from ipywidgets import *
 from matplotlib.widgets import Slider, Button, RadioButtons
+import time
 
-M = 100
+M = 1000
 T = 100
 N = 100
 
@@ -74,7 +75,12 @@ def MC_sim(M, simulator, T, N):
     print(np.shape(stockage))
     return np.asarray(stockage)
 
+
+t0 = time.time()
+
 mc_values = MC_sim(M, simulation, T, N)
+
+print("Runtime: " + str(time.time()-t0))
 
 #mc_values_reshaped = mc_values.reshape(mc_values.shape[0], -1)
 
