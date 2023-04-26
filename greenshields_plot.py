@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def flow(p, p_max, V_0, n_green):
-    return V_0*p*(1-(p*(1/p_max)**n_green))
+    return V_0*p*(1-(p*(1/p_max)))
 
 def plot_greenshields(p_max, V_0, n_green):
     p = np.arange(0, p_max)
