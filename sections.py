@@ -242,16 +242,16 @@ class section:
         self.V_0 = V_0
         self.l_eff = 1./self.p_max  
         
-        if not p_c:
+        if case==0 and not p_c:
             self.T = T
             self.p_c = 1./(V_0*T+self.l_eff)
-        else:
+        elif case==0 and p_c:
             self.p_c = p_c
             self.T = (1-p_c/self.p_max)/(p_c*V_0)
             print('T = ' + str(self.T))
         if case != 0:
             self.p_c = self.p_max/(n_green+1)**(1/n_green)
-            print((n_green+1)**(1/n_green))
+            self.T = (1-self.p_c/self.p_max)/(self.p_c*self.V_0)
         self.nom = nom
         self.I = I
         self.U = np.copy(U)
